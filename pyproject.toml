@@ -1,0 +1,17 @@
+[project]
+name = "llm-book-shop"
+version = "0.1.0"
+description = "A book shop application powered by LLMs"
+requires-python = ">=3.9"
+authors = [
+    { name = "Exiler", email="shaukoay.dev@gmail.com"},
+]
+dependencies = [
+    "black>=25.1.0",
+    "django>=4.2.23",
+    "dotenv>=0.9.9",
+    "ipykernel>=6.29.5",
+    "pandas>=2.3.1",
+    "pytest>=8.4.1",
+    "sqlalchemy>=2.0.41",
+]

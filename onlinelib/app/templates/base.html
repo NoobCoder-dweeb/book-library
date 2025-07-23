@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Online Library{% endblock %}</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    </head>
+    <body>
+        <h1>Online Library</h1>
+        <h2 class="text-3xl font-bold underline">      Hello world!    </h2>
+        <div class="container">{% block content %}{% endblock %}</div>
+    </body>
+</html>
