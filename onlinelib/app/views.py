@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from .models import Book
+from django.db.models import Q
 
 # Create your views here.
 def home (request):
@@ -43,10 +44,23 @@ def book_detail(request, book_id):
     # return HttpResponse(f"Book details: {book.title} by {book.author}")
     return render(request, "book.html", {"book": book})
 
-def search(request, name):
+def search(request):
     # Access request to avoid unused parameter warning
-    _ = request
-    books = Book.objects.filter(title__icontains=name)
+    errors = []
+    if request.method == "GET":
+        if not request.GET.get("q"):
+            errors.append("Please provide a book name to search.")
+        else:
+            name = request.GET.get("q", "").strip()
+        
+        if errors:
+            return HttpResponse(" ".join(errors))
+    
+    name_pieces = name.split()
+    query = Q()
+    for piece in name_pieces:
+        query |= Q(title__icontains=piece)
+    books = Book.objects.filter(query)
     if not books.exists():
         return HttpResponse("No books found.")
     # return render(request, "search_results.html", {"books": books})

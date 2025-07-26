@@ -8,9 +8,29 @@
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <link rel="stylesheet" href="{% static 'css/default.css' %}">
     </head>
-    <body>
-        <h1>Online Library</h1>
-        <h2 class="text-3xl font-bold underline">      Hello world!    </h2>
-        <div class="container">{% block content %}{% endblock %}</div>
+    <body class="bg-gray-50">
+        <nav class="bg-white shadow p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="{% static 'images/logo.png' %}" alt="Library Logo" class="h-10 w-10 rounded-full">
+                <span class="text-2xl font-bold text-gray-800">Online Library</span>
+            </div>
+
+            <!-- // TODO: Implement search functionality -->
+            <form action="{% url 'search' %}" method="get" class="flex">
+                <input 
+                    type="text" 
+                    name="q" 
+                    placeholder="Search books..." 
+                    class="px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                <button 
+                    type="submit" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700"
+                >
+                    Search
+                </button>
+            </form>
+        </nav>
+        {% block content %}{% endblock %}
     </body>
 </html>
