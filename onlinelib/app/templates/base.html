@@ -11,11 +11,10 @@
     <body class="bg-gray-50">
         <nav class="bg-white shadow p-4 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <img src="{% static 'images/logo.png' %}" alt="Library Logo" class="h-10 w-10 rounded-full">
+                <img src="{% static 'images/logo.png' %}" alt="Library Logo" class="h-10 w-10 bg-blue-600">
                 <span class="text-2xl font-bold text-gray-800">Online Library</span>
             </div>
 
-            <!-- // TODO: Implement search functionality -->
             <form action="{% url 'search' %}" method="get" class="flex">
                 <input 
                     type="text" 
