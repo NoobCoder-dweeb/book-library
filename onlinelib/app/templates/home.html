@@ -26,8 +26,7 @@
         <div class="overflow-x-auto">
             <div class="flex space-x-6">
                 {% for book in top_books %}
-                <a href="{% url 'book_detail' book.isbn %}" class="min-w-[220px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-center flex-shrink-0">
-                    <img src="{{ book.image_url }}" alt="{{ book.title }}" class="w-28 h-40 object-cover mb-3 mx-auto rounded" />
+                <a href="{% url 'book_detail' value={{book.isbn}} %}" class="min-w-[220px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-start flex-shrink-0">
                     <span class="font-medium text-gray-800 text-lg mb-2">{{ book.title }}</span>
                     <span class="text-sm text-indigo-600 font-semibold mb-1">Rating: {{ book.rating }}</span>
                     <span class="text-xs text-gray-500">ISBN: {{ book.isbn }}</span>
