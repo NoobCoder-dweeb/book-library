@@ -24,16 +24,42 @@
     <div id="top-books" class="bg-white rounded-lg shadow p-8 mb-10">
         <h2 class="text-2xl font-semibold mb-6 text-blue-700">Top 10 Rated Books</h2>
         <div class="overflow-x-auto">
-            <div class="flex space-x-6">
+            <div class="flex space-x-6 justify-end items-center h-[340px]">
                 {% for book in top_books %}
-                <a href="{% url 'book_detail' value={{book.isbn}} %}" class="min-w-[220px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-start flex-shrink-0">
-                    <span class="font-medium text-gray-800 text-lg mb-2">{{ book.title }}</span>
-                    <span class="text-sm text-indigo-600 font-semibold mb-1">Rating: {{ book.rating }}</span>
-                    <span class="text-xs text-gray-500">ISBN: {{ book.isbn }}</span>
-                </a>
+                    {% if forloop.counter == 10 %}
+                        <div class="relative w-[220px] h-[340px] flex-shrink-0 flex items-center">
+                            <a href="{% url 'book_detail' book.isbn %}" 
+                               class="absolute inset-0 bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-center overflow-hidden z-10">
+                                <img src="{{ book.image_url_s }}" alt="{{ book.title }}" 
+                                     class="w-28 h-40 object-cover mb-3 mx-auto rounded" />
+                                <span class="font-bold text-gray-800 text-lg mb-2 text-center truncate w-full block" title="{{ book.title }}">{{ book.title }}</span>
+                                <span class="font-medium text-gray-800 text-md mb-2 text-center truncate w-full block" title="{{ book.author }}">by {{ book.author }}</span>
+                                <span class="text-sm text-indigo-600 font-semibold mb-1 text-center">Rating: {{ book.rating }}</span>
+                            </a>
+                            <div class="absolute inset-0 rounded-lg pointer-events-none" style="background: linear-gradient(to right, rgba(255,255,255,0) 60%, rgba(255,255,255,0.85) 100%); filter: blur(2px); z-index:20;"></div>
+                        </div>
+                        <!-- Extra space for continue link -->
+                        <div class="w-[120px] h-[340px] flex items-center justify-end relative flex-shrink-0">
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-end w-full">
+                                <a href="{% url 'books_list' %}" class="text-blue-700 font-semibold text-sm underline hover:text-blue-900 transition px-2 py-1">
+                                    Continue &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'book_detail' book.isbn %}" 
+                           class="w-[220px] h-[340px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-center flex-shrink-0 overflow-hidden">
+                            <img src="{{ book.image_url_s }}" alt="{{ book.title }}" 
+                                 class="w-28 h-40 object-cover mb-3 mx-auto rounded" />
+                            <span class="font-bold text-gray-800 text-lg mb-2 text-center truncate w-full block" title="{{ book.title }}">{{ book.title }}</span>
+                            <span class="font-medium text-gray-800 text-md mb-2 text-center truncate w-full block" title="{{ book.author }}">by {{ book.author }}</span>
+                            <span class="text-sm text-indigo-600 font-semibold mb-1 text-center">Rating: {{ book.rating }}</span>
+                        </a>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Helpful Information Section -->
