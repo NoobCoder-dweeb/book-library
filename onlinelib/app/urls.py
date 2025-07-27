@@ -10,5 +10,5 @@ urlpatterns = [
     path("about/", views.about_us, name="about"),
     path("contact/", views.contact, name="contact"),
     path("search/", views.search, name="search"),
-    path("books/<int:book_id>/", views.book_detail, name="book_detail"),
+    path("books/<str:isbn>/", views.book_detail, name="book_detail"),
 ]

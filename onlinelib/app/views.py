@@ -39,9 +39,8 @@ def books_list(request):
     book = books[0] if books else None
     return HttpResponse(f"{book.author} - {book.title} - {book.isbn} - {book.pk}") if book else HttpResponse("No books available.")
 
-def book_detail(request, book_id):
-    book = Book.objects.get(pk=book_id)
-    # return HttpResponse(f"Book details: {book.title} by {book.author}")
+def book_detail(request, isbn):
+    book = Book.objects.get(pk=isbn)
     return render(request, "book.html", {"book": book})
 
 def search(request):
