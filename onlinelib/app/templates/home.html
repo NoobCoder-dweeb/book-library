@@ -23,14 +23,18 @@
     <!-- Top 10 Rated Books Box -->
     <div id="top-books" class="bg-white rounded-lg shadow p-8 mb-10">
         <h2 class="text-2xl font-semibold mb-6 text-blue-700">Top 10 Rated Books</h2>
-        <ol class="space-y-3">
-            {% for book in top_books %}
-            <li class="flex justify-between items-center border-b pb-2 last:border-b-0">
-                <span class="font-medium text-gray-800">{{ book.title }}</span>
-                <span class="text-sm text-indigo-600 font-semibold">Rating: {{ book.rating }}</span>
-            </li>
-            {% endfor %}
-        </ol>
+        <div class="overflow-x-auto">
+            <div class="flex space-x-6">
+                {% for book in top_books %}
+                <a href="{% url 'book_detail' book.isbn %}" class="min-w-[220px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-center flex-shrink-0">
+                    <img src="{{ book.image_url }}" alt="{{ book.title }}" class="w-28 h-40 object-cover mb-3 mx-auto rounded" />
+                    <span class="font-medium text-gray-800 text-lg mb-2">{{ book.title }}</span>
+                    <span class="text-sm text-indigo-600 font-semibold mb-1">Rating: {{ book.rating }}</span>
+                    <span class="text-xs text-gray-500">ISBN: {{ book.isbn }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
     <!-- Helpful Information Section -->
