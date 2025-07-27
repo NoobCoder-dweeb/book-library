@@ -1,6 +1,37 @@
-{% extends "base.html" %} {% block title %}{{ book.name }}{% endblock %}
+{% extends "base.html" %} 
+{% block title %}{{ book.name }}{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold underline">Book Detail</h1>
-<p>Book Name: {{ book.name }}</p>
+<div class="w-screen min-h-screen bg-white flex flex-col items-center justify-center p-0 m-0">
+    <div class="w-full max-w-6xl flex flex-col md:flex-row items-stretch gap-10 bg-white shadow-2xl rounded-2xl overflow-hidden">
+        <div class="flex-shrink-0 flex items-center justify-center p-8 md:p-12 bg-white" style="box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10); border-radius: 1.5rem;">
+            <img 
+                src="{{ book.image_url_m }}" 
+                alt="Book cover" 
+                class="w-[22rem] h-[32rem] object-cover rounded-2xl shadow-xl border-4 border-white"
+                style="box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);"
+            >
+        </div>
+        <div class="flex-1 flex flex-col justify-center p-10">
+            <h1 class="text-5xl font-extrabold mb-4">{{ book.name }}</h1>
+            <div class="space-y-2 text-lg">
+                <p><span class="font-semibold">Author:</span> {{ book.author }}</p>
+                <p><span class="font-semibold">Publisher:</span> {{ book.publisher }}</p>
+                <p><span class="font-semibold">Year:</span> {{ book.year }}</p>
+                <p><span class="font-semibold">ISBN:</span> {{ book.isbn }}</p>
+            </div>
+            <button 
+                id="show-summary-btn" 
+                class="mt-8 px-8 py-3 bg-blue-600 text-white rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
+                onclick="document.getElementById('summary-box').classList.remove('hidden')"
+            >
+                Show Summary
+            </button>
+        </div>
+    </div>
+    <div id="summary-box" class="hidden w-full max-w-6xl mt-10 p-8 bg-gray-100 rounded-2xl shadow-inner">
+        <h2 class="text-3xl font-bold mb-4">Summary</h2>
+        <p class="text-gray-800 text-lg">{{ book.summary }}</p>
+    </div>
+</div>
 {% endblock %}
