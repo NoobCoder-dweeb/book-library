@@ -34,10 +34,10 @@ def contact(request):
 
 def books_list(request):
     books = Book.objects.all()
-    # return render(request, "books_list.html", {"books": books})
-    # return HttpResponse(f"Books list: {', '.join([book.title for book in books])}")
-    book = books[0] if books else None
-    return HttpResponse(f"{book.author} - {book.title} - {book.isbn} - {book.pk}") if book else HttpResponse("No books available.")
+    if not books.exists():
+        return HttpResponse("No books available.")
+    
+    return render(request, "books.html", {"books": books})
 
 def book_detail(request, isbn):
     book = Book.objects.get(pk=isbn)

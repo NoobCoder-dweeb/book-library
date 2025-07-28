@@ -1,3 +1,74 @@
 {% extends "base.html" %}{% block title %}Books{% endblock %}
-
 {% block content %}
+<div id="all-books" class="bg-white rounded-lg shadow p-8 mb-10">
+    <h2 class="text-2xl font-semibold mb-6 text-blue-700">All Books</h2>
+    <div id="books-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        {% for book in books %}
+            <a href="{% url 'book_detail' book.isbn %}" 
+               class="w-full h-[340px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-center overflow-hidden">
+                <img src="{{ book.image_url_s }}" alt="{{ book.title }}" 
+                     class="w-28 h-40 object-cover mb-3 mx-auto rounded" loading="lazy" />
+                <span class="font-bold text-gray-800 text-lg mb-2 text-center truncate w-full block" title="{{ book.title }}">{{ book.title }}</span>
+                <span class="font-medium text-gray-800 text-md mb-2 text-center truncate w-full block" title="{{ book.author }}">by {{ book.author }}</span>
+                <span class="text-sm text-indigo-600 font-semibold mb-1 text-center">Rating: {{ book.rating }}</span>
+            </a>
+        {% endfor %}
+    </div>
+    <div id="loading-indicator" class="text-center mt-6 hidden">
+        <span class="text-blue-600 font-semibold">Loading more books...</span>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const booksList = document.getElementById('books-list');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const CHUNK_SIZE = 50;
+    let offset = {{ books|length }};
+    let loading = false;
+    let allLoaded = false;
+
+    async function loadMoreBooks() {
+        if (allLoaded || loading) return;
+        loading = true;
+        loadingIndicator.classList.remove('hidden');
+        try {
+            const resp = await fetch(`/api/books/?offset=${offset}&limit=${CHUNK_SIZE}`);
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data.books && data.books.length > 0) {
+                    data.books.forEach(book => {
+                        const card = document.createElement('a');
+                        card.href = `/books/${book.isbn}/`;
+                        card.className = "w-full h-[340px] bg-blue-50 rounded-lg shadow hover:shadow-lg transition p-5 flex flex-col items-center overflow-hidden";
+                        card.innerHTML = `
+                            <img src="${book.image_url_s}" alt="${book.title}" class="w-28 h-40 object-cover mb-3 mx-auto rounded" loading="lazy" />
+                            <span class="font-bold text-gray-800 text-lg mb-2 text-center truncate w-full block" title="${book.title}">${book.title}</span>
+                            <span class="font-medium text-gray-800 text-md mb-2 text-center truncate w-full block" title="${book.author}">by ${book.author}</span>
+                            <span class="text-sm text-indigo-600 font-semibold mb-1 text-center">Rating: ${book.rating}</span>
+                        `;
+                        booksList.appendChild(card);
+                    });
+                    offset += data.books.length;
+                    if (data.books.length < CHUNK_SIZE) {
+                        allLoaded = true;
+                    }
+                } else {
+                    allLoaded = true;
+                }
+            }
+        } catch (e) {
+            // handle error
+        }
+        loadingIndicator.classList.add('hidden');
+        loading = false;
+    }
+
+    window.addEventListener('scroll', function() {
+        if (allLoaded || loading) return;
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+            loadMoreBooks();
+        }
+    });
+});
+</script>
+{% endblock %}
