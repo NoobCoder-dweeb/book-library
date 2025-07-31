@@ -24,10 +24,6 @@
     <div id="top-books" class="bg-white rounded-lg shadow p-8 mb-10">
         <h2 class="text-2xl font-semibold mb-6 text-blue-700">Top 10 Rated Books</h2>
         <div class="relative">
-            <!-- Slider Buttons -->
-            <button id="slider-left" type="button" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full p-2 shadow transition hidden md:block">
-                &#8592;
-            </button>
             <div id="books-slider" class="overflow-x-auto scroll-smooth">
                 <div class="flex space-x-6 items-center h-[340px] min-w-max">
                     {% for book in top_books %}
@@ -64,9 +60,6 @@
                     {% endfor %}
                 </div>
             </div>
-            <button id="slider-right" type="button" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full p-2 shadow transition hidden md:block">
-                &#8594;
-            </button>
         </div>
     </div>
     <script>
