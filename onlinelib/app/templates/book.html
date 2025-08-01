@@ -32,6 +32,14 @@
     <div id="summary-box" class="hidden w-full max-w-6xl mt-10 p-8 bg-gray-100 rounded-2xl shadow-inner">
         <h2 class="text-3xl font-bold mb-4">Summary</h2>
         <p class="text-gray-800 text-lg">{{ book.summary }}</p>
+        <script
+            src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js">
+            </script>
+            <langflow-chat
+                window_title="Demo"
+                flow_id="7d704b6f-8541-4865-8f77-ba720e1cd49f"
+                host_url="http://127.0.0.1:7860">
+            </langflow-chat>
     </div>
 </div>
 {% endblock %}

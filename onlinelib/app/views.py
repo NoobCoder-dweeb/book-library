@@ -1,6 +1,10 @@
 from django.shortcuts import render, HttpResponse
 from .models import Book
 from django.db.models import Q
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Create your views here.
 def home (request):
@@ -64,3 +68,46 @@ def search(request):
         return HttpResponse("No books found.")
     # return render(request, "search_results.html", {"books": books})
     return HttpResponse(f"Search results for '{name}': {', '.join([book.title for book in books])}")
+
+
+def summarise(request, book_title: str):
+    import requests
+    import os
+    import json
+
+    # API Configuration
+    try:
+        api_key = os.environ["LANGFLOW_API_KEY"]
+    except KeyError:
+        raise ValueError("LANGFLOW_API_KEY environment variable not found. Please set your API key in the environment variables.")
+
+    url = "http://127.0.0.1:7860/api/v1/run/7d704b6f-8541-4865-8f77-ba720e1cd49f"  # The complete API endpoint URL for this flow
+
+    # Request payload configuration
+    payload = {
+        "output_type": "chat",
+        "input_type": "chat",
+        "input_value": "Summarise the book titled: " + book_title,
+    }
+
+    # Request headers
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": api_key  # Authentication key from environment variable
+    }
+
+    try:
+        # Send API request
+        response = requests.request("POST", url, json=payload, headers=headers)
+        response.raise_for_status()  # Raise exception for bad status codes
+
+        # Print response
+        data = response.json()
+        output = data["outputs"][0]["outputs"][0]["results"]["message"]["data"]["text"]
+        # return HttpResponse(response.text)
+        return HttpResponse(output)
+
+    except requests.exceptions.RequestException as e:
+        return HttpResponse(f"Error making API request: {e}")
+    except ValueError as e:
+        return HttpResponse(f"Error parsing response: {e}")
