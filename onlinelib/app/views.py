@@ -87,7 +87,7 @@ def summarise(request):
     except KeyError:
         raise ValueError("LANGFLOW_API_KEY environment variable not found. Please set your API key in the environment variables.")
 
-    url = "http://127.0.0.1:7860/api/v1/run/7d704b6f-8541-4865-8f77-ba720e1cd49f"  # The complete API endpoint URL for this flow
+    url = "YOUR_API_ENDPOINT_HERE"  # Replace with your actual API endpoint
 
     # Request payload configuration
     payload = {
