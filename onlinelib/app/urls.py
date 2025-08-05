@@ -10,5 +10,6 @@ urlpatterns = [
     path("about/", views.about_us, name="about"),
     path("contact/", views.contact, name="contact"),
     path("search/", views.search, name="search"),
+    path("summarise/", views.summarise, name="summarise"),
     path("books/<str:isbn>/", views.book_detail, name="book_detail"),
 ]

@@ -23,15 +23,46 @@
             <button 
                 id="show-summary-btn" 
                 class="mt-8 px-8 py-3 bg-blue-600 text-white rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
-                onclick="document.getElementById('summary-box').classList.remove('hidden')"
             >
                 Show Summary
             </button>
         </div>
     </div>
+
     <div id="summary-box" class="hidden w-full max-w-6xl mt-10 p-8 bg-gray-100 rounded-2xl shadow-inner">
         <h2 class="text-3xl font-bold mb-4">Summary</h2>
-        <p class="text-gray-800 text-lg">{{ book.summary }}</p>
+        <p id="summary-text" class="text-gray-800 text-lg"></p>
+
+        <!-- <script src="https://cdn.jsdelivr.net/gh/logspace-ai/langflow-embedded-chat@v1.0.7/dist/build/static/js/bundle.min.js"></script>
+        <langflow-chat
+            window_title="Demo"
+            flow_id="7d704b6f-8541-4865-8f77-ba720e1cd49f"
+            host_url="http://127.0.0.1:7860">
+        </langflow-chat> -->
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('show-summary-btn');
+    const summaryBox = document.getElementById('summary-box');
+    const summaryText = document.getElementById('summary-text');
+
+    btn.addEventListener('click', async () => {
+        summaryBox.classList.remove('hidden');
+        summaryText.textContent = 'Loading summary...';
+
+        try {
+            const response = await fetch(`/summarise/?title={{ book.title|urlencode }}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+            console.log(data);
+            summaryText.textContent = data.summary;
+        } catch (error) {
+            summaryText.textContent = 'Failed to load summary.';
+            console.error(error);
+        }
+    });
+});
+</script>
 {% endblock %}
