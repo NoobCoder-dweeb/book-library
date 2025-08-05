@@ -2,29 +2,36 @@ from django.apps import AppConfig
 import subprocess
 import os
 import sys
+from pathlib import Path
+import atexit
 
 class AppConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "app"
 
     def ready(self):
-        # Check if the 'langflow' package is installed
-        try:
-            import langflow  # noqa: F401
-        except ImportError:
-            # If not installed, run the installation command
-            subprocess.run(["pip", "install", "langflow"], check=True)
-            print("langflow package installed successfully.")
-        else:   
-            print("langflow package is already installed.")
-            
-            if os.environ.get("RUN_MAIN", None) != "true":
+        if os.environ.get("RUN_MAIN") != "true":
+            return  # Ensure RUN_MAIN is set for the server
+        
+        if "runserver" in sys.argv:
+            lock_file = Path("tmp/langflow.lock")
+
+            if lock_file.exists():
+                print("LangFlow is already running. Skipping startup.")
                 return
-            
-            if "runserver" in sys.argv:
-                try:
-                    # Start the Langflow server
-                    subprocess.Popen(["langflow", "run", "--port", "7860"])
-                    print("✅ LangFlow started on port 7860")
-                except Exception as e:
-                    print(f"❌ Failed to start LangFlow: {e}")
+            try:
+                # Start the Langflow server
+                subprocess.Popen(["langflow", "run", "--port", "7860"])
+                lock_file.write_text("LangFlow is running")
+                print("✅ LangFlow started on port 7860")
+            except Exception as e:
+                print(f"❌ Failed to start LangFlow: {e}")
+
+
+def cleanup():
+    lock_file = Path("tmp/langflow.lock")
+    if lock_file.exists():
+        lock_file.unlink()
+        print("✅ LangFlow lock file removed on exit.")
+        
+atexit.register(cleanup)

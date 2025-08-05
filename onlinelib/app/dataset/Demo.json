@@ -1627,7 +1627,7 @@
             "frozen": false,
             "icon": "bot",
             "key": "Agent",
-            "last_updated": "2025-08-01T00:35:53.582Z",
+            "last_updated": "2025-08-01T01:05:31.070Z",
             "legacy": false,
             "lf_version": "1.5.0.post1",
             "metadata": {},
@@ -2500,7 +2500,7 @@
             "frozen": false,
             "icon": "AstraDB",
             "key": "AstraDB",
-            "last_updated": "2025-08-01T00:35:53.583Z",
+            "last_updated": "2025-08-01T01:05:31.071Z",
             "legacy": false,
             "lf_version": "1.5.0.post1",
             "metadata": {},
@@ -3509,7 +3509,7 @@
             "frozen": false,
             "icon": "file-text",
             "key": "File",
-            "last_updated": "2025-08-01T00:35:53.584Z",
+            "last_updated": "2025-08-01T01:05:31.072Z",
             "legacy": false,
             "lf_version": "1.5.0.post1",
             "metadata": {},
@@ -3789,9 +3789,9 @@
       }
     ],
     "viewport": {
-      "x": -113.75705216730103,
-      "y": 35.91023552306967,
-      "zoom": 0.5886628782792378
+      "x": -729.9668086428528,
+      "y": 62.470954426083296,
+      "zoom": 0.6894479563462123
     }
   },
   "description": "Language Models, Unleashed.",

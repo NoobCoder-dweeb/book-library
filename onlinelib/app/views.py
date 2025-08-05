@@ -1,6 +1,10 @@
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
 from .models import Book
 from django.db.models import Q
+from django.views.decorators.http import require_GET
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -69,12 +73,14 @@ def search(request):
     # return render(request, "search_results.html", {"books": books})
     return HttpResponse(f"Search results for '{name}': {', '.join([book.title for book in books])}")
 
-
-def summarise(request, book_title: str):
+@require_GET
+@csrf_exempt  # remove if CSRF token is handled
+def summarise(request):
     import requests
     import os
     import json
 
+    title = request.GET.get('title', '')
     # API Configuration
     try:
         api_key = os.environ["LANGFLOW_API_KEY"]
@@ -87,7 +93,7 @@ def summarise(request, book_title: str):
     payload = {
         "output_type": "chat",
         "input_type": "chat",
-        "input_value": "Summarise the book titled: " + book_title,
+        "input_value": "Summarise the book titled: " + title,
     }
 
     # Request headers
@@ -104,10 +110,14 @@ def summarise(request, book_title: str):
         # Print response
         data = response.json()
         output = data["outputs"][0]["outputs"][0]["results"]["message"]["data"]["text"]
-        # return HttpResponse(response.text)
-        return HttpResponse(output)
+        summary = f"""This is a generated summary for the book: {title}.
+        
+        {output}"""
+        return JsonResponse({'summary': summary})
 
     except requests.exceptions.RequestException as e:
         return HttpResponse(f"Error making API request: {e}")
     except ValueError as e:
         return HttpResponse(f"Error parsing response: {e}")
+    
+        
