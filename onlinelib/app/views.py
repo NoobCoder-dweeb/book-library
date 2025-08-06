@@ -87,13 +87,13 @@ def summarise(request):
     except KeyError:
         raise ValueError("LANGFLOW_API_KEY environment variable not found. Please set your API key in the environment variables.")
 
-    url = "YOUR_API_ENDPOINT_HERE"  # Replace with your actual API endpoint
+    url = os.environ["LANGFLOW_API_URL"]
 
     # Request payload configuration
     payload = {
         "output_type": "chat",
         "input_type": "chat",
-        "input_value": "Summarise the book titled: " + title,
+        "input_value": "Tell me more about the book titled, " + title,
     }
 
     # Request headers
